@@ -1,14 +1,18 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import { ErrorBoundary } from 'react-error-boundary'
-import { Provider } from 'react-redux'
-import { store } from './state/store.ts'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import './index.css';
+
+import App from './App.tsx';
+import Error from './components/Error.tsx';
+import { ErrorBoundary } from 'react-error-boundary';
+import { store } from './state/store.ts';
+
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ErrorBoundary fallback={<div>Some error occured...</div>}>
+    <ErrorBoundary FallbackComponent={Error}>
       <Provider store={store}>
         <App />
       </Provider>

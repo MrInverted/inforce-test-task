@@ -1,46 +1,50 @@
 import React from 'react';
+import { toast } from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-type Product = Omit<IProduct, 'id' | 'comments' | 'imageUrl'> & { file: boolean };
+import { setAddModal } from '../state/modals';
+import { useAppDispatch } from '../state/store';
+import { createProduct, fetchProducts } from '../state/products';
+
+type Product = Omit<IProduct, 'id' | 'comments' | 'imageUrl'> & { file: string };
 
 function useAddProductModal() {
-  const [file, setFile] = React.useState<File | null>()
+  const dispatch = useAppDispatch();
+  const [file, setFile] = React.useState<File | null>();
   const { handleSubmit, register, formState, reset, setValue, trigger } = useForm<Product>({
-    mode: "onChange",
-    defaultValues: {
-      name: "",
-      count: 0,
-      weight: 0,
-      size: {
-        width: 0,
-        height: 0
-      }
-    }
+    mode: "onChange"
   });
 
-  const formHandler: SubmitHandler<Product> = (e) => {
-    console.log(e);
-
+  const formHandler: SubmitHandler<Product> = (data) => {
     reset();
+    setFile(null);
+
+    dispatch(createProduct(data))
+      .then(() => toast.success("New product was added"))
+      .then(() => dispatch(fetchProducts()))
+      .then(() => dispatch(setAddModal(false)))
+      .catch(() => toast.error("Error while adding product"));
   }
 
   const onFormSubmit = handleSubmit(formHandler);
 
-  const _fileTrigger = register("file", {
+  register("file", {
     required: { value: true, message: "File is required" }
-  })
+  });
 
   const onInputFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.item(0);
 
     if (!file) {
       setFile(null);
-      setValue("file", false);
+      setValue("file", "");
       trigger("file");
       return;
     }
 
-    setValue("file", true);
+    const fileLink = URL.createObjectURL(file);
+
+    setValue("file", fileLink);
     trigger("file");
     setFile(file);
   }

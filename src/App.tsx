@@ -1,7 +1,8 @@
-import Layout from "./layouts/Layout";
-import ListProducts from "./components/ListProducts";
-import AllModals from "./modals/AllModals";
+import { Toaster } from "react-hot-toast";
 
+import Layout from "./layouts/Layout";
+import AllModals from "./modals/AllModals";
+import ListProducts from "./components/ListProducts";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <ListProducts />
 
       <AllModals />
+      <Toaster position="bottom-right" />
     </Layout>
   )
 }

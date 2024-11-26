@@ -17,7 +17,7 @@ const modalSlice = createSlice({
       state.isDeleteModal = action.payload;
     }
   }
-})
+});
 
 export { modalSlice };
 

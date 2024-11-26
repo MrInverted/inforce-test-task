@@ -4,15 +4,15 @@ interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string
 }
 
-function MyInput(inc: IProps, ref: any) {
+function MyInput({ labelText, ...rest }: IProps, ref: any) {
   return (
     <label
       className="flex flex-col gap-1 w-full">
-      <span>{inc.labelText}</span>
+      <span>{labelText}</span>
       <input
         className="block w-full px-4 py-2 border"
         ref={ref}
-        {...inc}
+        {...rest}
       />
     </label>
 
