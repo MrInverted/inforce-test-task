@@ -1,5 +1,5 @@
 interface IProduct {
-  id: number;
+  id: string;
   imageUrl: string;
   name: string;
   count: number;
@@ -14,8 +14,8 @@ interface Size {
 }
 
 interface IComment {
-  id: number;
-  productId: number;
+  id: string;
+  productId: string;
   description: string;
   date: string;
 }

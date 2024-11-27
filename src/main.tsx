@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import './index.css';
 
 import App from './App.tsx';
-import Error from './components/Error.tsx';
+import Error from './components/GlobalError.tsx';
 import { ErrorBoundary } from 'react-error-boundary';
 import { store } from './state/store.ts';
 

@@ -2,7 +2,7 @@ import { Toaster } from "react-hot-toast";
 
 import Layout from "./layouts/Layout";
 import AllModals from "./modals/AllModals";
-import ListProducts from "./components/ListProducts";
+import ListProducts from "./components/ListProducts/ListProducts";
 
 function App() {
   return (

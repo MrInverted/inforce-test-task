@@ -1,4 +1,6 @@
-import { FadeLoader } from "react-spinners"
+import { FadeLoader } from "react-spinners";
+
+
 
 function Spinner() {
   return (

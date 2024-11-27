@@ -2,50 +2,56 @@ import React from 'react';
 import { toast } from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { setAddModal } from '../state/modals';
-import { useAppDispatch } from '../state/store';
-import { createProduct, fetchProducts } from '../state/products';
+import { setEditModal } from '../../state/modals';
+import { useAppDispatch, useAppSelector } from '../../state/store';
+import { fetchProducts, updateProduct } from '../../state/products-async';
 
-type Product = Omit<IProduct, 'id' | 'comments' | 'imageUrl'> & { file: string };
+type Product = Omit<IProduct, 'id' | 'comments'>;
 
-function useAddProductModal() {
+
+
+function useEditProductModal() {
   const dispatch = useAppDispatch();
+  const current = useAppSelector(store => store.products.current);
   const [file, setFile] = React.useState<File | null>();
-  const { handleSubmit, register, formState, reset, setValue, trigger } = useForm<Product>({
-    mode: "onChange"
+  const { handleSubmit, register, formState, reset, setValue, getValues, trigger } = useForm<Product>({
+    mode: "onBlur",
+    defaultValues: (current ? { ...current } : {})
   });
 
   const formHandler: SubmitHandler<Product> = (data) => {
     reset();
     setFile(null);
 
-    dispatch(createProduct(data))
-      .then(() => toast.success("New product was added"))
+    dispatch(updateProduct({ id: current!.id, inc: data }))
+      .then(() => toast.success("Product was updated"))
       .then(() => dispatch(fetchProducts()))
-      .then(() => dispatch(setAddModal(false)))
+      .then(() => dispatch(setEditModal(false)))
       .catch(() => toast.error("Error while adding product"));
   }
 
   const onFormSubmit = handleSubmit(formHandler);
 
-  register("file", {
+  register("imageUrl", {
     required: { value: true, message: "File is required" }
   });
+
+  const imageUrl = getValues("imageUrl");
 
   const onInputFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const file = e.target.files?.item(0);
 
     if (!file) {
       setFile(null);
-      setValue("file", "");
-      trigger("file");
+      setValue("imageUrl", "");
+      trigger("imageUrl");
       return;
     }
 
     const fileLink = URL.createObjectURL(file);
 
-    setValue("file", fileLink);
-    trigger("file");
+    setValue("imageUrl", fileLink);
+    trigger("imageUrl");
     setFile(file);
   }
 
@@ -54,7 +60,7 @@ function useAddProductModal() {
     formState.errors.size?.width?.message ||
     formState.errors.size?.height?.message ||
     formState.errors.weight?.message ||
-    formState.errors.file?.message;
+    formState.errors.imageUrl?.message;
 
 
 
@@ -64,7 +70,8 @@ function useAddProductModal() {
     register,
     isErrors,
     file,
+    imageUrl
   }
 }
 
-export default useAddProductModal;
+export default useEditProductModal

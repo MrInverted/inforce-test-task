@@ -1,42 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { axiosInstance } from "../libs/axios";
-
-const fetchProducts = createAsyncThunk(
-  "products/fetch",
-  async (_, api) => {
-    try {
-      const { data } = await axiosInstance.get("/products");
-      return data;
-    } catch (error) {
-      return api.rejectWithValue("ERRRRRRRRRRRRRRROR")
-    }
-  }
-);
-
-const createProduct = createAsyncThunk(
-  "products/create",
-  async (inc: any, api) => {
-    try {
-      const { data } = await axiosInstance.post("/products", inc);
-      return data;
-    } catch (error) {
-      return api.rejectWithValue("ERRRRRRRRRRRRRRROR")
-    }
-  }
-);
-
-const deleteProduct = createAsyncThunk(
-  "products/delete",
-  async (id: number, api) => {
-    try {
-      const { data } = await axiosInstance.delete(`/products/${id}`);
-      return data;
-    } catch (error) {
-      return api.rejectWithValue("ERRRRRRRRRRRRRRROR")
-    }
-  }
-);
-
+import { createSlice } from "@reduxjs/toolkit";
+import { deleteProduct, fetchProducts } from "./products-async";
 
 
 const productslice = createSlice({
@@ -46,12 +9,17 @@ const productslice = createSlice({
     isLoading: true,
     isError: false,
     products: [] as IProduct[],
-    current: {} as IProduct | null
+    current: {} as IProduct | null,
+    sortBy: '' as 'A-Z' | '0-1',
   },
 
   reducers: {
     setCurrent(state, action) {
       state.current = action.payload
+    },
+
+    setSortBy(state, action) {
+      state.sortBy = action.payload;
     }
   },
 
@@ -73,13 +41,12 @@ const productslice = createSlice({
     })
 
 
-
     builder.addCase(deleteProduct.fulfilled, (state) => {
       state.current = null;
     })
   }
 });
 
-export { productslice, fetchProducts, deleteProduct, createProduct };
+export { productslice }
 
-export const { setCurrent } = productslice.actions;
+export const { setCurrent, setSortBy } = productslice.actions

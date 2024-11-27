@@ -1,8 +1,10 @@
-import React from "react"
+import React from "react";
 
 interface IProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelText: string
 }
+
+
 
 function MyInput({ labelText, ...rest }: IProps, ref: any) {
   return (
@@ -15,7 +17,6 @@ function MyInput({ labelText, ...rest }: IProps, ref: any) {
         {...rest}
       />
     </label>
-
   )
 }
 

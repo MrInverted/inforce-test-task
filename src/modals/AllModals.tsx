@@ -1,24 +1,27 @@
 import React from 'react'
 import { useAppSelector } from '../state/store';
-import AddProductModal from './AddProductModal';
-import DeleteProductModal from './DeleteProductModal';
+
+import CardModal from './Card/CardModal';
+import AddProductModal from './AddProduct/AddProductModal';
+import EditProductModal from './EditProduct/EditProductModal';
+import DeleteProductModal from './DeleteProduct/DeleteProductModal';
+
+
 
 function AllModals() {
-  const { isAddModal, isDeleteModal } = useAppSelector(store => store.modals);
+  const { isAddModal, isDeleteModal, isEditModal, isCardModal } = useAppSelector(store => store.modals);
 
   React.useEffect(() => {
-    const isSomeModalOpened = isAddModal || isDeleteModal;
+    const isSomeModalOpened = isAddModal || isEditModal || isDeleteModal || isCardModal;
 
-    if (isSomeModalOpened) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
-    }
-  }, [isAddModal])
+    document.body.style.overflow = isSomeModalOpened ? "hidden" : "";
+  }, [isAddModal, isDeleteModal, isEditModal, isCardModal]);
 
   return (
     <>
+      {isCardModal && <CardModal />}
       {isAddModal && <AddProductModal />}
+      {isEditModal && <EditProductModal />}
       {isDeleteModal && <DeleteProductModal />}
     </>
   )

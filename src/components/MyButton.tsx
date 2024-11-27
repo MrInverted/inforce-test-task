@@ -6,6 +6,8 @@ interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
 };
 
+
+
 function MyButton({ children, color, className, ...rest }: IProps) {
   return (
     <button

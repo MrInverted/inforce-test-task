@@ -5,7 +5,9 @@ const modalSlice = createSlice({
 
   initialState: {
     isAddModal: false,
-    isDeleteModal: false
+    isDeleteModal: false,
+    isEditModal: false,
+    isCardModal: false,
   },
 
   reducers: {
@@ -15,10 +17,18 @@ const modalSlice = createSlice({
 
     setDeleteModal(state, action) {
       state.isDeleteModal = action.payload;
-    }
+    },
+
+    setEditModal(state, action) {
+      state.isEditModal = action.payload;
+    },
+
+    setCardModal(state, action) {
+      state.isCardModal = action.payload;
+    },
   }
 });
 
-export { modalSlice };
+export { modalSlice }
 
-export const { setAddModal, setDeleteModal } = modalSlice.actions;
+export const { setAddModal, setDeleteModal, setEditModal, setCardModal } = modalSlice.actions

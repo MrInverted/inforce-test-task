@@ -1,13 +1,16 @@
 import { GoUpload } from "react-icons/go";
+import { IoMdClose } from "react-icons/io";
+import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdErrorOutline } from "react-icons/md";
 
 import useAddProductModal from './AddProductModal.hook';
-import { useAppDispatch } from "../state/store";
-import { setAddModal } from "../state/modals";
+import { useAppDispatch } from "../../state/store";
+import { setAddModal } from "../../state/modals";
 
-import Modal from './Modal'
-import MyInput from '../components/MyInput';
-import MyButton from '../components/MyButton';
+import Modal from '../Modal'
+import MyInput from '../../components/MyInput';
+import MyButton from '../../components/MyButton';
+
 
 
 function AddProductModal() {
@@ -30,7 +33,7 @@ function AddProductModal() {
             labelText='Title'
             {...register("name", {
               required: { value: true, message: "Product name is required" },
-              minLength: { value: 5, message: "Min product length is 5 chars" }
+              minLength: { value: 5, message: "Title length should be more than 5 chars" }
             })} />
 
           <MyInput
@@ -69,7 +72,7 @@ function AddProductModal() {
               min: { value: 50, message: "Min height is 50" }
             })} />
 
-          <label className='h-20 flex justify-center items-center gap-3 border'>
+          <label className='h-20 flex justify-center items-center gap-3 border cursor-pointer'>
             <GoUpload />
             <span className='block text-center'>
               {file?.name ? file?.name : 'Add product image'}
@@ -79,9 +82,16 @@ function AddProductModal() {
 
           <hr />
 
-          <div className="flex">
-            <MyButton type='submit' color='primary'>Confirm</MyButton>
-            <MyButton type='button' color='outlined' className='ml-auto' onClick={onModalClose}>Cancel</MyButton>
+          <div className="flex gap-2">
+            <MyButton type='submit' color='primary' className="flex-1">
+              <IoIosAddCircleOutline />
+              <span>Add</span>
+            </MyButton>
+
+            <MyButton type='button' color='outlined' className='flex-1' onClick={onModalClose}>
+              <IoMdClose />
+              <span>Cancel</span>
+            </MyButton>
           </div>
 
           {isErrors && (
